@@ -1,0 +1,29 @@
+<div class="user-profile">
+    <h2>User Profile</h2>
+    <form *ngIf="!isEditing; else editTemplate">
+        <div>
+            <label>Email:</label>
+            <input type="text" [value]="email" disabled />
+        </div>
+        <div>
+            <label>Pseudo:</label>
+            <input type="text" [value]="pseudo" disabled />
+        </div>
+        <button type="button" (click)="toggleEdit()">Edit</button>
+    </form>
+
+    <ng-template #editTemplate>
+        <form (submit)="saveChanges()">
+            <div>
+                <label>Email:</label>
+                <input type="text" [(ngModel)]="email" name="email" required />
+            </div>
+            <div>
+                <label>Pseudo:</label>
+                <input type="text" [(ngModel)]="pseudo" name="pseudo" required />
+            </div>
+            <button type="submit">Save</button>
+            <button type="button" (click)="toggleEdit()">Cancel</button>
+        </form>
+    </ng-template>
+</div>
