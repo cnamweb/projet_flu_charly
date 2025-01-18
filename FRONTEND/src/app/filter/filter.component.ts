@@ -23,7 +23,6 @@ export class FilterComponent {
     selectedCategory: string = 'All';
 
     onFilterChange() {
-        console.log('Filter changed');
         const filter = new Filter();
         filter.name = this.search;
         filter.category = this.selectedCategory;

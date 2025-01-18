@@ -1,0 +1,15 @@
+<div class="cards_container">
+    <h2>Here are all the current entered cards</h2>
+    <div class="cards_list">
+        <div *ngFor="let card of cards()" class="card_item">
+            <button (click)="deleteCard(card)" class="delete_btn">X</button>
+            <p class="card_code">{{ card.securityCode }}</p>
+            <p class="card_nbr">{{ card.cardNumber }}</p>
+            <div class="card_date">
+                <p >Expiration <br> Date </p>
+                <p>{{ card.expirationDate }}</p>
+            </div>
+            <p class="card_name">{{ card.cardHolder }}</p>
+        </div>
+    </div>
+</div>

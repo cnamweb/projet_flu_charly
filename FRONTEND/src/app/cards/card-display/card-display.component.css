@@ -1,0 +1,92 @@
+.cards_list{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+h2{
+    text-align: center;
+    margin: 20px;
+}
+
+.card_item{
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+    padding: 10px;
+    border: 2px solid #ffffff;
+    border-radius: 5px;
+    width: 250px;
+    position: relative;
+    overflow: visible;
+}
+
+.card_code{
+    width: 100%;
+    text-align: right;
+    margin: 0;
+    font-weight: bold;
+}
+
+.card_nbr{
+    width: 100%;
+    text-align: left;
+    margin: 0;
+    padding-left: 10px;
+    font-weight: bold;
+}
+
+.card_date{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: left;
+    padding-left: 30%;
+}
+
+.card_date p{
+    padding-left: 10px;
+    margin: 0;
+}
+
+.card_date p:last-child{
+    font-weight: bold;
+}
+
+.card_name{
+    width: 100%;
+    text-align: left;
+    margin: 0;
+    padding-left: 10px;
+}
+
+.delete_btn{
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    background-color: transparent;
+    border: none;
+    color: red;
+    font-weight: bold;
+    font-size: 1.5rem;
+    transition: all 0.3s;
+}
+
+.delete_btn:hover{
+    cursor: pointer;
+    transition: all 0.3s;   
+    animation: card_hover_delete 0.15s infinite;
+}
+
+@keyframes card_hover_delete{
+    0%{
+        transform: rotate(0deg);
+    }
+    50%{
+        transform: rotate(12deg);
+    }
+    100%{
+        transform: rotate(-12deg);
+    }
+}

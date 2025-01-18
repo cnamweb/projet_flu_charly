@@ -1,0 +1,36 @@
+<form [formGroup]="cardForm" (ngSubmit)="onSubmit()">
+    <h2>Please enter your card information,</h2>
+    <div class="form_input_group">
+        <label for="name">Card Holder Name</label>
+        <input type="text" id="name" formControlName="cardHolder" placeholder="Name">
+        <div *ngIf="cardForm.get('cardHolder')?.invalid && cardForm.get('cardHolder')?.touched" class="error">
+            <p *ngIf="cardForm.get('cardHolder')?.errors?.['required']">Card holder name is required.</p>
+            <p *ngIf="cardForm.get('cardHolder')?.errors?.['pattern']">Only alphabets and spaces are allowed.</p>
+        </div>
+    </div>
+    <div class="form_input_group">
+        <label for="cardNumber">Card Number</label>
+        <input type="text" id="cardNumber" formControlName="cardNumber" placeholder="0123456789012345">
+        <div *ngIf="cardForm.get('cardNumber')?.invalid && cardForm.get('cardNumber')?.touched" class="error">
+            <p *ngIf="cardForm.get('cardNumber')?.errors?.['required']">Card number is required.</p>
+            <p *ngIf="cardForm.get('cardNumber')?.errors?.['pattern']">Card number must be exactly 16 digits.</p>
+        </div>
+    </div>
+    <div class="form_input_group">
+        <label for="expirationDate">Expiration Date</label>
+        <input type="text" id="expirationDate" formControlName="expirationDate" placeholder="01/24">
+        <div *ngIf="cardForm.get('expirationDate')?.invalid && cardForm.get('expirationDate')?.touched" class="error">
+            <p *ngIf="cardForm.get('expirationDate')?.errors?.['required']">Expiration date is required.</p>
+            <p *ngIf="cardForm.get('expirationDate')?.errors?.['pattern']">Use MM/YY format (e.g., 12/25).</p>
+        </div>
+    </div>
+    <div class="form_input_group">
+        <label for="securityCode">Security Code</label>
+        <input type="text" id="securityCode" formControlName="securityCode" placeholder="123">
+        <div *ngIf="cardForm.get('securityCode')?.invalid && cardForm.get('securityCode')?.touched" class="error">
+            <p *ngIf="cardForm.get('securityCode')?.errors?.['required']">Security code is required.</p>
+            <p *ngIf="cardForm.get('securityCode')?.errors?.['pattern']">Security code must be exactly 3 digits.</p>
+        </div>
+    </div>
+    <button type="submit" [disabled]="!cardForm.valid">Submit</button>
+</form>

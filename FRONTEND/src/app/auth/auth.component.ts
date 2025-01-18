@@ -71,13 +71,13 @@ export class AuthComponent implements OnInit {
                     localStorage.setItem('refreshToken', response.tokens.refreshToken);
                 },
                 (error) => {
+                    if(error.status / 100 === 4) {
                     console.error('Error:', error);
-                    switch (error.status) {
-                        case 401:
-                            alert('Email or password incorrect');
-                            break;
-                        default:
-                            alert('An error occurred, probably a charly error');
+                    alert('Error ' + error.status + " : " + error.error.message);
+                    }
+                    else {
+                        console.error('Internal error:', error);
+                        alert('Internal error ' + error.status + " : " + error.statusText);
                     }
                 }
             );
