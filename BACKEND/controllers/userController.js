@@ -97,9 +97,9 @@ exports.loginUser = async (req, res) => {
 
 // Get user info
 exports.getUser = (req, res) => {
-  const { email } = req.user;
+  const { id } = req.user;
 
-  Utilisateurs.findOne({ where: { email: email } })
+  Utilisateurs.findOne({ where: { id: id } })
     .then(data => {
       if (data) {
         res.status(200).json({ email: data.email, pseudo: data.pseudo });
@@ -114,11 +114,11 @@ exports.getUser = (req, res) => {
 
 // Update user details
 exports.updateUser = (req, res) => {
-  const previousEmail = req.user.email;
+  const userId = req.user.id;
   //password is for now not sent in the request body
   const { email, pseudo } = req.body;
 
-  Utilisateurs.findOne({ where: { email: previousEmail } })
+  Utilisateurs.findOne({ where: { id: userId } })
     .then(async data => {
       if (data) {
         if (email) data.email = email;
@@ -143,7 +143,7 @@ exports.refreshToken = async (req, res) => {
 
   try {
       const decoded = jwt.verify(refreshToken, SECRET_KEY);
-      const user = await Utilisateurs.findOne({ where: { email: decoded.user.email } });
+      const user = await Utilisateurs.findOne({ where: { id: decoded.user.id } });
       if (!user) {
           return res.status(403).json({ message: 'User not found.' });
       }
