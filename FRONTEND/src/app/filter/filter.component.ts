@@ -2,10 +2,10 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs';
-import { ProduitState } from '../states/produits.state';
 import { Store } from '@ngxs/store';
 import { Filter } from '../models/filter';
-import { UpdateFilter } from '../actions/produits-action';
+import { InitAllCategories , UpdateFilter } from '../actions/produits-action';
+import { ProduitState } from '../states/produits.state';
 
 @Component({
     selector: 'app-filter',
@@ -18,6 +18,8 @@ export class FilterComponent {
 
     constructor(private store: Store) {
         this.categories$ = this.store.select(ProduitState.getAllCategories);
+
+        this.store.dispatch(new InitAllCategories());
     }
     search: string = '';
     selectedCategory: string = 'All';

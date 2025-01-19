@@ -12,7 +12,7 @@ module.exports = {
             try {
                 let jwtBearer = token.split(' ')[1];
                 const decoded = jwt.verify(jwtBearer, SECRET_KEY);
-                req.user = decoded;
+                req.user = decoded.user;
 
             } catch (err) {
                 return res.status(403).json({ message: 'Invalid or expired token.' });

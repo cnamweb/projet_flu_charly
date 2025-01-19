@@ -17,7 +17,7 @@ export class ProductListComponent {
   products$: Observable<Produit[]>;
 
   constructor(private store: Store) { 
-    this.products$ = this.store.select(ProduitState.getProduits_filtre);
+    this.products$ = this.store.select(ProduitState.getProduits);
   }
 
   onAddToCart(product: Produit, quantity: string) {

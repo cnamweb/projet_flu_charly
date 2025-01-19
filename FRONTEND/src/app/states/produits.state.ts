@@ -6,17 +6,19 @@ import {
     StateContext,
 } from '@ngxs/store';
 import { ProduitStateModel } from './produits-state-model';
-import { AddProduit, UpdateFilter } from '../actions/produits-action';
+import { AddProduit, UpdateFilter, InitAllCategories } from '../actions/produits-action';
+import { ApiService } from '../api.service';
 
 @State<ProduitStateModel>({
     name: 'produits',
     defaults: {
         produits: [],
-        produits_filtre: []
+        categories: [],
     },
 })
 @Injectable()
 export class ProduitState {
+    constructor(private apiService: ApiService) { }
 
     @Selector()
     static getProduits(state: ProduitStateModel) {
@@ -24,35 +26,37 @@ export class ProduitState {
     }
 
     @Selector()
-    static getProduits_filtre(state: ProduitStateModel) {
-        return state.produits_filtre;
+    static getAllCategories(state: ProduitStateModel) {
+        return state.categories;
     }
 
-    @Selector()
-    static getAllCategories(state: ProduitStateModel) {
-        let categories = new Set<string>();
-        state.produits.forEach(product => {
-            categories.add(product.category);
-        });
-        return Array.from(categories);
+    @Action(InitAllCategories)
+    async InitAllCategories({ getState, patchState }: StateContext<ProduitStateModel>, { }: any){
+        this.apiService.getProduitCategories().subscribe(
+            (categories) => {
+                for (let i = 0; i < categories.length; i++) {
+                    categories[i] = categories[i].category;
+                }
+                categories = Array.from(new Set(categories));
+
+                patchState({ categories });
+            },
+            (error) => console.error('Error loading user info:', error)
+        );
     }
 
     @Action(UpdateFilter)
-    updateFilter({ getState, patchState }: StateContext<ProduitStateModel>, { payload }: any) {
-        const state = getState();
-        let produits_filtre = state.produits;
-        
-        produits_filtre = produits_filtre.filter(product => {
-            if (payload.category != null && payload.category != "All" && !product.category.toLowerCase().includes(payload.category.toLowerCase())) {
-                return false;
-            }
-            if (payload.name != null && payload.name != "" && !product.namepr.toLowerCase().includes(payload.name.toLowerCase())) {
-                return false;
-            }
-            return true;
-        });
+    async updateFilter({ getState, patchState }: StateContext<ProduitStateModel>, { payload }: any) {
+        if(payload.category === 'All'){
+            payload.category = '';
+        }
 
-        patchState({ produits_filtre });
+        this.apiService.getProduitsFiltre(payload.name, payload.category).subscribe(
+            (produits) => {
+                patchState({ produits });
+            },
+            (error) => console.error('Error loading user info:', error)
+        );
     }
 
     @Action(AddProduit)
@@ -60,8 +64,6 @@ export class ProduitState {
         const state = getState();
         const produits = [...state.produits];
         produits.push(payload);
-        //update the produits_filtre
-        let produits_filtre = state.produits;
-        patchState({ produits, produits_filtre });
+        patchState({ produits });
     }
 }

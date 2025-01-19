@@ -11,6 +11,17 @@ export class ApiService {
     return this.http.get<Produit[]>(environment.backendProduct);
   }
 
+  public getProduitsFiltre( name : string, category : string): Observable<Produit[]> {
+    console.log(name);
+    console.log(category);
+    const body = { name, category};
+    return this.http.post<Produit[]>(environment.backendProduct, body);
+  }
+
+  public getProduitCategories(): Observable<any> {
+    return this.http.get<any>(environment.backendProductCategories);
+  }
+
   public register(email: string, pseudo: string, password: string): Observable<any> {
     const body = { email, pseudo, password };
     return this.http.post(environment.backendRegister, body);

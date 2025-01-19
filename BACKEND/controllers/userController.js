@@ -13,13 +13,12 @@ const REFRESH_TOKEN_EXPIRATION = '7d';
 // Generate JWT Tokens
 const generateToken = (user) => {
   const payload = {
-    email: user.email,
-    pseudo: user.pseudo,
+    user,
     issuedAt: Date.now(),
   };
 
-  const accessToken = jwt.sign(payload, SECRET_KEY, { expiresIn: ACCESS_TOKEN_EXPIRATION });
-  const refreshToken = jwt.sign(payload, SECRET_KEY, { expiresIn: REFRESH_TOKEN_EXPIRATION });
+  const accessToken = jwt.sign({ ...payload, type: 'access' }, SECRET_KEY, { expiresIn: ACCESS_TOKEN_EXPIRATION });
+  const refreshToken = jwt.sign({ ...payload, type: 'refresh' }, SECRET_KEY, { expiresIn: REFRESH_TOKEN_EXPIRATION });
 
   return { accessToken, refreshToken };
 };
@@ -98,6 +97,8 @@ exports.loginUser = async (req, res) => {
 
 // Get user info
 exports.getUser = (req, res) => {
+  console.log(req);
+
   const { email } = req.user;
 
   Utilisateurs.findOne({ where: { email: email } })

@@ -1,6 +1,7 @@
 import { ApplicationConfig, importProvidersFrom } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { ApiService } from './api.service';
+import { TokenService } from './token.service';
 import { NgxsModule } from '@ngxs/store';
 import { PanierState } from './states/panier.state';
 import { ProduitState } from './states/produits.state';
@@ -14,6 +15,7 @@ export const appConfig: ApplicationConfig = {
     providers: [
         provideRouter(routes),
         ApiService,
+        TokenService,
         importProvidersFrom(NgxsModule.forRoot([PanierState, ProduitState, UserState])),
         provideHttpClient(withInterceptorsFromDi()),
         {

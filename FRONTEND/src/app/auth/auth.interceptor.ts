@@ -6,12 +6,16 @@ import {
     HttpRequest,
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { TokenService } from '../token.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
+    constructor(private tokenService: TokenService) {}
+
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        // Get the token from localStorage
-        const token = localStorage.getItem('accessToken');
+        // Retrieve the token from the token service signal
+        const token = this.tokenService.getTokenValue();
+        console.log('Token:', token);
 
         // Clone the request and add the Authorization header
         const clonedRequest = token

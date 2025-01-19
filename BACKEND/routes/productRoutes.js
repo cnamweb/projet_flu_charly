@@ -5,6 +5,8 @@ module.exports = app => {
   let router = require('express').Router();
 
   router.get('/', productsController.get);
+  router.post('/', productsController.getFiltered);
+  router.get('/categories', productsController.getAllCategories);
 
   app.use('/api/products', router);
 };

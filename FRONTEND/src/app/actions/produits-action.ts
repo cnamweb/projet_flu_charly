@@ -10,3 +10,8 @@ export class AddProduit {
   static readonly type = '[Produits] Add Produit';
   constructor(public payload: Produit) {}
 }
+
+export class InitAllCategories {
+  static readonly type = '[Produits] Get All Categories';
+  constructor() {}
+}

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ApiService } from '../api.service';
+import { TokenService } from '../token.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -25,9 +26,8 @@ export class AuthComponent implements OnInit {
 
     ngOnInit(): void {
         // Check if the user is already authenticated
-        const accessToken = localStorage.getItem('accessToken');
         const refreshToken = localStorage.getItem('refreshToken');
-        if (accessToken && refreshToken) {
+        if (refreshToken) {
             this.apiService.getCurrentUser().subscribe(
                 (user: any) => {
                     this.isAuthenticated = true;
@@ -40,7 +40,7 @@ export class AuthComponent implements OnInit {
         }
     }
 
-    constructor(private apiService: ApiService, private store: Store) {
+    constructor(private apiService: ApiService, private store: Store, private tokenService: TokenService) {
         this.displayPseudo$ = this.store.select(UserState.getPseudo);
     }
 
@@ -67,7 +67,9 @@ export class AuthComponent implements OnInit {
                     console.log('User pseudo:', response.pseudo);
                     this.store.dispatch(new UpdatePseudo(response.pseudo));
                     // put the access token in the local storage
-                    localStorage.setItem('accessToken', response.tokens.accessToken);
+                    console.log('Access token:', response.tokens.accessToken);
+                    console.log('Refresh token:', response.tokens.refreshToken);
+                    this.tokenService.setToken(response.tokens.accessToken);
                     localStorage.setItem('refreshToken', response.tokens.refreshToken);
                 },
                 (error) => {
@@ -90,8 +92,8 @@ export class AuthComponent implements OnInit {
         this.password = '';
         this.pseudo = '';
         this.store.dispatch(new UpdatePseudo(''));
-        localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
+
         alert('You have been logged out.');
     }
 }
