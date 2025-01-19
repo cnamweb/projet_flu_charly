@@ -62,13 +62,9 @@ export class AuthComponent implements OnInit {
         else {
             this.apiService.login(this.email, this.password).subscribe(
                 (response: any) => {
-                    console.log('Logged in:', response);
                     this.isAuthenticated = true;
-                    console.log('User pseudo:', response.pseudo);
                     this.store.dispatch(new UpdatePseudo(response.pseudo));
                     // put the access token in the local storage
-                    console.log('Access token:', response.tokens.accessToken);
-                    console.log('Refresh token:', response.tokens.refreshToken);
                     this.tokenService.setToken(response.tokens.accessToken);
                     localStorage.setItem('refreshToken', response.tokens.refreshToken);
                 },

@@ -10,6 +10,8 @@ module.exports = app => {
     router.post('/login', userController.loginUser);
     router.get('/user', authenticate, userController.getUser);
     router.put('/user', authenticate, userController.updateUser);
-
+    // Route for refreshing access token
+    router.post('/refresh-token', userController.refreshToken);
+    
     app.use('/api/users', router);
 }

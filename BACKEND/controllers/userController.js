@@ -97,8 +97,6 @@ exports.loginUser = async (req, res) => {
 
 // Get user info
 exports.getUser = (req, res) => {
-  console.log(req);
-
   const { email } = req.user;
 
   Utilisateurs.findOne({ where: { email: email } })
@@ -134,4 +132,26 @@ exports.updateUser = (req, res) => {
     .catch(err => {
       res.status(500).json({ message: err.message || 'An error occurred while retrieving the user.' });
     });
+};
+
+exports.refreshToken = async (req, res) => {
+
+  const { refreshToken } = req.body;
+  if (!refreshToken) {
+      return res.status(401).json({ message: 'Refresh token missing.' });
+  }
+
+  try {
+      const decoded = jwt.verify(refreshToken, SECRET_KEY);
+      const user = await Utilisateurs.findOne({ where: { email: decoded.user.email } });
+      if (!user) {
+          return res.status(403).json({ message: 'User not found.' });
+      }
+
+      const tokens = generateToken(user);
+
+      res.json({ message: 'Token refreshed successfully.', tokens });
+  } catch (error) {
+      res.status(403).json({ message: 'Invalid or expired refresh token.', error });
+  }
 };

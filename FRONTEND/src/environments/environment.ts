@@ -11,4 +11,5 @@ export const environment = {
   backendRegister: 'http://localhost:443/api/users/register',
   backendLogin: 'http://localhost:443/api/users/login',
   backendUser: 'http://localhost:443/api/users/user',
+  backendRefreshToken: 'http://localhost:443/api/users/refresh-token'
 };

@@ -12,8 +12,6 @@ export class ApiService {
   }
 
   public getProduitsFiltre( name : string, category : string): Observable<Produit[]> {
-    console.log(name);
-    console.log(category);
     const body = { name, category};
     return this.http.post<Produit[]>(environment.backendProduct, body);
   }
@@ -38,5 +36,10 @@ export class ApiService {
 
   public updateUser(updatedUser: any): Observable<any> {
     return this.http.put<any>(environment.backendUser, updatedUser);
+  }
+
+  public refreshToken(refreshToken : string): Observable<any> {
+    const body = { refreshToken };
+    return this.http.post(environment.backendRefreshToken, body);
   }
 }
